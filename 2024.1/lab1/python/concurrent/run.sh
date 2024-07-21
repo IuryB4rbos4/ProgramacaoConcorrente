@@ -10,4 +10,4 @@ if [ "$#" -lt 1 ]; then
 fi
 
 # Passa todos os argumentos para o script Python
-python3 $BASE_DIR/sum.py "$@"
+python3 $BASE_DIR/sum.py
