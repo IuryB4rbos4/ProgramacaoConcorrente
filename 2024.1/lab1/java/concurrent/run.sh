@@ -2,12 +2,11 @@
 
 BASE_DIR=$(dirname -- "$( readlink -f -- "$0"; )")
 
-
 # Verifica se pelo menos um argumento foi passado
 if [ "$#" -lt 1 ]; then
-  echo "Usage: $0 path1 [path2 ...]"
+  echo "Uso: $0 arquivo1 [arquivo2 ...]"
   exit 1
 fi
 
-# Passa todos os argumentos para o script Python
-python3 $BASE_DIR/sum.py "$@"
+# chama o programa java com os arg passados para o script bash
+java -cp $BASE_DIR/bin/ Sum "$@"
