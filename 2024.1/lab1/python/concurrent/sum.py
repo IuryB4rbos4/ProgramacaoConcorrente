@@ -1,11 +1,13 @@
 import os, os.path
 import threading
 import sys
+mutex = threading.Semaphore(1)
 
 def sum_thread(thread_idx, size, res):
     for i in range(size[0], size[1]):
+        mutex.acquire()
         res[thread_idx] += do_sum("../../dataset/" + "file." + str(i  + 1))
-
+        mutex.release()
 
 def do_sum(path):
     _sum = 0
