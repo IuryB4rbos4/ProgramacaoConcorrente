@@ -1,0 +1,1 @@
+2. Explique a razão de travas TTAS terwe melhor desempenho do que travas TAS

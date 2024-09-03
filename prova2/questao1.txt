@@ -1,0 +1,4 @@
+1. Implemente uma nova versão (em pseudo-código, som formalismo matemático) do algoritmo 
+Bakery usande variavels atómicus. O algoritmo precisa manter sua logica própria 
+(p.ex, a implementação de Bakery precisa continuar sorteando ticket etc). 
+Considere a APIS atómicas em...
