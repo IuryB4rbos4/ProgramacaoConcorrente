@@ -1,4 +1,34 @@
-1. Implemente uma nova versão (em pseudo-código, som formalismo matemático) do algoritmo 
-Bakery usande variavels atómicus. O algoritmo precisa manter sua logica própria 
+1. Implemente uma nova versão (em pseudo-código, sem formalismo matemático) do algoritmo 
+Bakery usande variavels atômicas. O algoritmo precisa manter sua logica própria 
 (p.ex, a implementação de Bakery precisa continuar sorteando ticket etc). 
 Considere a APIS atómicas em...
+
+import java.util.concurrent.atomic.*
+
+Class Bakery implements Lock {
+
+    private AtomicBoolean choosing;
+    private AtomicInteger maxValue;
+    private Integer[] tickets;
+
+    public Bakery(int nThreads, AtomicBoolean choosing, AtomicInteger maxValue){
+        this.choosing = new AtomicBoolean(False);
+        this.maxValue = new AtomicInteger(1);
+        this.tickets = new Integer[nThreads];
+    }
+
+    public lock(){
+        int my_id = Thread.currentThread().getId();
+        this.tickets[my_id] = maxValue.getAndIncrement();
+
+        this.choosing.set(True);
+        for(int i = 0; i < tickets.length();i++){
+            if(tickets[i] > this.tickets[my_id]){
+                tickets[i] = maxValue.get()
+            }
+        }
+        tickets[my_id] = maxValue.
+        this.choosing.set(False);
+    }
+    public unlock(){}
+}
