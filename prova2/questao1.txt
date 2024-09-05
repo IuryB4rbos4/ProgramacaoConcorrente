@@ -1,5 +1,5 @@
 1. Implemente uma nova versão (em pseudo-código, sem formalismo matemático) do algoritmo 
-Bakery usande variavels atômicas. O algoritmo precisa manter sua logica própria 
+Bakery usando variavels atômicas. O algoritmo precisa manter sua logica própria 
 (p.ex, a implementação de Bakery precisa continuar sorteando ticket etc). 
 Considere a APIS atómicas em...
 
@@ -7,28 +7,34 @@ import java.util.concurrent.atomic.*
 
 Class Bakery implements Lock {
 
-    private AtomicBoolean choosing;
-    private AtomicInteger maxValue;
-    private Integer[] tickets;
+    private AtomicInteger count;
+    private AtomicInteger[] tickets;
+    private int nThreads;
 
-    public Bakery(int nThreads, AtomicBoolean choosing, AtomicInteger maxValue){
-        this.choosing = new AtomicBoolean(False);
-        this.maxValue = new AtomicInteger(1);
-        this.tickets = new Integer[nThreads];
+    public Bakery(int nThreads){
+        this.count = new AtomicInteger(0);
+        this.tickets = new AtomicInteger[nThreads];
+        this.nThreads = nThreads;
+        for(int i = 0; i < nThreads; i++){
+            this.tickets[i] = new AtomicInteger(0);
+        }
     }
 
     public lock(){
         int my_id = Thread.currentThread().getId();
-        this.tickets[my_id] = maxValue.getAndIncrement();
+        this.tickets[my_id].set(this.count.incrementAndGet());
 
-        this.choosing.set(True);
-        for(int i = 0; i < tickets.length();i++){
-            if(tickets[i] > this.tickets[my_id]){
-                tickets[i] = maxValue.get()
-            }
+        for(int i = 0; i < this.nThreads; i++){
+            if (i == my_id) continue;
+
+            while(this.tickets[i].get() != 0 &&
+            (this.tickets[i].get() < this.tickets[my_id].get() ||
+            (this.tickets[i].get() == this.tickets[my_id].get() && i < my_id))){}
         }
-        tickets[my_id] = maxValue.
-        this.choosing.set(False);
+
     }
-    public unlock(){}
+    public unlock(){
+        int my_id = Thread.currentThread().getId();
+        tickets[my_id].set(0);
+    }
 }
