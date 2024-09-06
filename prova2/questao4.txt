@@ -1,0 +1,48 @@
+4. Discuta que  problemas de segurança e progressos os locks abaixo podem ter. 
+
+class Lock three {
+
+    private boolean[] flags new Boolean[2];
+
+    public void lock() {
+
+        int my_id = Thread.getID():
+
+        for (;;){
+            flags[my id] = true; 
+            if (flags[1 - my_id] == false) break;
+            flags[my_id] = false;
+            while (flags[1 = my_id] == true);
+        }
+    }
+    
+    public void unlock(){
+        int i = Thread.getId();
+        flag[i] = false;
+    }
+}
+class LockFour {
+
+    private boolean[] flags = new Boolear[2]; 
+    
+    public void lock() { 
+        int my_id = Thread.getID();
+
+        if (my_id == 1) {
+            flags[my_id] = true;
+            while (flags[1 - my_id] == true) {};
+        } else {
+            for (;;){
+            flags[my id] = true; 
+            if (flags[1 - my_id] == false) break;
+            flags[my_id] = false;
+            while (flags[1 = my_id] == true);
+            }
+        }
+    }
+
+    public void unlock(){
+        int i = Thread.getId();
+        flag[i] = false;
+    }
+}

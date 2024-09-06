@@ -1,0 +1,30 @@
+3. Muitos compiladores podem reordenar instruções para melhorar o desempenho do programa. 
+Por exemplo, considere que um compilador execute primeiro a instrução de leitura 
+feita na linha 8 (note, somente a instrução que le o valor de flag[j]), e em seguida é feita
+a atribuição da linha 7 (flag[i] = true), e por fim, a comparação com true da linha 8 
+(perceba que a linha 8 executa mais de uma instrução). 
+Que tipo de problemas (progresso e/ou segurança) esse código pode passar a ter por conta dessa 
+reordenação feita pelo compilador. Ilustre sua resposta com uma sequência ordenada de instruções.
+
+1 class LockOne () {
+2 private boolean[] flags = new Boolean(2):
+3
+4   public votil lock() {
+5       int i = Thread.getId();
+6       int j = 1 - i;
+7       flag[i] = true;
+8       while (flag[j]){};
+9   }
+10 public void unlock(){
+11      int i = Thread.getId();
+12      flag[i] = false;
+13  }
+14 }
+
+Segurança:
+    T0_8 -> flag[1] == false. 
+    T1_8 -> flag[0] == false.
+    T0_7 -> flag[0] = True.
+    T1_7 -> flag[1] = True.
+
+Problema de segurança onde duas Threads entram na região crítica ao mesmo tempo.

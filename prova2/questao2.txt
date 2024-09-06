@@ -1,0 +1,6 @@
+2. Explique a razão de travas TTAS terwe melhor desempenho do que travas TAS
+Travas TAS: Fazem uso contínuo de operações atômicas, o que gera alta invalidação de cache e sobrecarga de tráfego de memória.
+Travas TTAS: Primeiro fazem uma leitura simples da trava, minimizando a necessidade de operações atômicas e, portanto, 
+reduzindo a invalidação de cache e melhorando o desempenho em sistemas com múltiplos processadores.
+Por isso, o TTAS tende a ter melhor desempenho em cenários concorrentes com muitos processadores, especialmente quando há alta contenção, 
+pois reduz a quantidade de operações atômicas necessárias para adquirir a trava.
