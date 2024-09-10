@@ -1,0 +1,76 @@
+Abaixo, temos um esboço de implementação de lista encadeada. Esta implementação 
+temproblemas de concorrência. Detecte e corrija os problemas detectados
+usandosemáforos. Não proteja regiões maiores que o necessário.
+
+Semaforo mutex = Semaforo(1);
+
+int List_Insert(list_t *L, int key) {
+    node_t* new = malloc(sizeof(node_t));
+    if (new == NULL) {
+        perror("malloc");
+        return -1; // fail
+    }
+    mutex.wait()
+    new->key = key;
+    new->next = L->head;
+    L->head = new;
+    mutex.signal()
+    return 0; // success
+}
+
+int List_Lookup(list_t*L, int key) {
+    node_t*curr = L->head;
+    // Começar a ler a linked_list, tem que garantir quem não tem thread lendo
+    mutex.wait();
+    while (curr) {
+        if (curr->key == key){
+            // Caso encontre o valor libera o mutex
+            mutex.signal(); 
+            return 0; // success
+    }
+    curr =curr->next;
+    }
+    mutex.signal(); // Como não encontrou o numero, ela libera o mutex
+    return -1; // failure
+}
+
+Note que da maneira que foi implementado o mutex, garantimos que não exista
+problema de concorrencia. Porém, a garantia é de apenas uma Thread executando as
+funções basicamente, o que de fato é muito bom para a inserção, já que deve
+ter apenas uma Thread nessa região. Ademais, concorda comigo que fazer N execuções,
+onde N tende a milhares de threads realizando operação de busca, não existe problema
+de concorrencia em realizar operações de leitura, desde que não tenha uma operação
+de escrita.
+
+Semaforo hasWrite = Semaforo(1);
+Semaforo notHasWrite = Semaforo(n);
+
+int List_Insert(list_t *L, int key) {
+    node_t* new = malloc(sizeof(node_t));
+    if (new == NULL) {
+        perror("malloc");
+        return -1; // fail
+    }
+    hasWrite.wait()
+    new->key = key;
+    new->next = L->head;
+    L->head = new;
+    hasWrite.signal()
+    return 0; // success
+}
+
+int List_Lookup(list_t*L, int key) {
+    node_t*curr = L->head;
+    // Começar a ler a linked_list, tem que garantir quem não tem thread lendo
+    mutex.wait();
+    while (curr) {
+        if (curr->key == key){
+            // Caso encontre o valor libera o mutex
+            mutex.signal(); 
+            return 0; // success
+    }
+    curr =curr->next;
+    }
+    mutex.signal(); // Como não encontrou o numero, ela libera o mutex
+    return -1; // failure
+}
